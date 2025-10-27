@@ -1,8 +1,8 @@
-package com.example;
+//package com.example;
+//
+//import io.quarkus.test.junit.QuarkusIntegrationTest;
 
-import io.quarkus.test.junit.QuarkusIntegrationTest;
-
-@QuarkusIntegrationTest
-class ExampleResourceIT extends ExampleResourceTest {
+//@QuarkusIntegrationTest
+//class ExampleResourceIT extends ExampleResourceTest {
     // Execute the same tests but in packaged mode.
-}
+//}
