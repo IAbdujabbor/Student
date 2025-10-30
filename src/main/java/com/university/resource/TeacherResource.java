@@ -15,22 +15,42 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Optional;
 
-@Path("/teachers")
+@Path("/teacher")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 
 public class TeacherResource {
 
-    private final TeacherRepository teacherRepository;
+
     private final TeacherService teacherService;
 
     @Inject
-    public TeacherResource(TeacherRepository teacherRepository, TeacherService teacherService) {
-    this.teacherRepository = teacherRepository;
+    public TeacherResource(TeacherService teacherService) {
+
         this.teacherService = teacherService;
     }
 
+    //Read All
+    @GET
+    @Path("/getAll")
+    public Response getAllTeachers() {
+        teacherService.getAllTeachers();
+        return Response.ok(teacherService.getAllTeachers()).build();
+    }
+
+    @GET
+    @Path("/getById/{id}")
+    public Response getTeacherById(@PathParam("id") Long id) {
+        return teacherService.getTeacherById(id)
+                .map(teacherExist -> Response.ok(teacherExist).build())
+                .orElse(Response.status(Response.Status.NOT_FOUND)
+                        .entity("Teacher with ID " + id + " not found")
+                        .build());
+    }
+
+    //Create
     @POST
     @Transactional
     @Path("/add")
@@ -42,29 +62,17 @@ public class TeacherResource {
                 .build();
     }
 
-    @GET
-    @Path("/getAll")
-    public List<Teacher> getAllTeachers() {
-        return  teacherService.getAllTeachers();
-//                .stream()
-//                .map(s->Response.status(200)
-//                        .build());
-    }
-
-
+    //Delete
     @DELETE
     @Path("/deleteById/{id}")
     public Response deleteTeacherById(@PathParam("id") Long id) {
-
-         teacherService.deleteTeacher(id);
-         return Response
-                 .status(Response.Status.OK)
-                 .entity(id)
-                 .build();
+        teacherService.deleteTeacher(id);
+        return Response
+                .status(Response.Status.OK)
+                .entity(id)
+                .build();
         //teacherService.deleteTeacher(id);
     }
-
-
 
 
 }

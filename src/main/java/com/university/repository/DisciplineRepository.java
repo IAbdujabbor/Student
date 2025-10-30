@@ -12,21 +12,31 @@ import java.util.Optional;
 @ApplicationScoped
 public class DisciplineRepository implements PanacheRepository<Discipline> {
 
-
+    //Read All
     public List<Discipline> getAll() {
         return listAll();
     }
 
-    @Transactional
-    public Optional<Discipline> deleteByDisciplineId(Long id) {
-        return findByIdOptional(id).map(disciplineExist->{delete(
-                disciplineExist);
-            return disciplineExist;});
+    public Optional<Discipline> getByIdDiscipline(Long id){
+        return findByIdOptional(id);
     }
 
+
+    //Search
     public List<Discipline> findByName(String disciplineName) {
         return list("disciplineName", disciplineName);
     }
+
+    @Transactional
+    public Optional<Discipline> deleteByDisciplineId(Long id) {
+        return findByIdOptional(id).map(disciplineExist -> {
+            delete(
+                    disciplineExist);
+            return disciplineExist;
+        });
+    }
+
+
 
     @Transactional
     public Discipline add(Discipline discipline) {

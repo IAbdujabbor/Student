@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 
 @Entity
-@Table(name="discipline")
+@Table(name = "discipline")
 public class Discipline {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "discipline_seq")
@@ -23,14 +23,14 @@ public class Discipline {
             allocationSize = 1
     )
     private Long id;
-    @Column( name = "discipline_name", nullable = false, unique=true)
-    private String disciplineName ;
+    @Column(name = "discipline_name", nullable = false, unique = true)
+    private String disciplineName;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "discipline", cascade = CascadeType.ALL, orphanRemoval =true)
+    @OneToMany(mappedBy = "discipline", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Attendance> attendance = new HashSet<>();
 
 

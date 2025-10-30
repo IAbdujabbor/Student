@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Entity
 public class StudentAndTeacher implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE ,generator ="student_and_teacher")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_and_teacher")
     @SequenceGenerator(
             name = "student_and_teacher",
             sequenceName = "STUDENT_AND_TEACHER",

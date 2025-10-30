@@ -1,8 +1,8 @@
 package com.university.resource;
 
 
-import  com.university.entity.*;
-import  com.university.service.*;
+import com.university.entity.*;
+import com.university.service.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -27,25 +27,38 @@ public class AttendanceResource {
         this.attendanceService = attendanceService;
     }
 
+    //Read All
     @GET
     @Path("/getAll")
-    public List<Attendance> getAll() {return attendanceService.getAll();}
+    public Response getAll() {
 
+        attendanceService.getAll();
+        return Response.ok().build();
+    }
+
+    //Read By Id
+    @GET
+    @Path("/getAttendance/{id}")
+    public Response getAttendance(@PathParam("id") Long id) {
+        attendanceService.getByIdAttendance(id);
+
+        return Response.ok().build();
+
+    }
+
+    //Create
     @POST
     @Path("/add")
     @Transactional
-        public Response addAttendance(Attendance attendance) {
+    public Response addAttendance(Attendance attendance) {
 
-         attendanceService.addAttendance( attendance);
+        attendanceService.addAttendance(attendance);
         return Response
                 .status(Response.Status.CREATED)
                 .entity(attendance)
                 .build();
 
     }
-
-
-
 
 
 }

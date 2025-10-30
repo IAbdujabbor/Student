@@ -14,10 +14,10 @@ import lombok.*;
 @Setter
 
 @Entity
-@Table(name="teacher")
-public class Teacher  {
+@Table(name = "teacher")
+public class Teacher {
     //
-    @GeneratedValue(strategy = GenerationType.SEQUENCE ,generator ="teacher_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teacher_seq")
     @Id
     @SequenceGenerator(
             name = "teacher_seq",
@@ -25,16 +25,16 @@ public class Teacher  {
             allocationSize = 1
     )
     private Long id;
-    @Column(name="firstname", nullable = false)
+    @Column(name = "firstname", nullable = false)
     private String firstName;
 
-    @Column(name="lastname",  nullable = false)
+    @Column(name = "lastname", nullable = false)
     private String lastName;
 
-    @Column(name="patronymic", nullable=false)
+    @Column(name = "patronymic", nullable = false)
     private String patronymic;
 
-    @Column (name ="age", nullable = false)
+    @Column(name = "age", nullable = false)
     private Integer age;
 
     @ManyToMany(mappedBy = "teacher")

@@ -11,7 +11,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("/students")
+@Path("/student")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class StudentResource {
@@ -24,17 +24,17 @@ public class StudentResource {
         this.studentService = studentService;
     }
 
-
-    @POST
-    @Path("/create")
-    public StudentDto create(Student student) {
-        //   return studentService.create(student.getName(), student.getAge());
-        return null;
+    // Read All
+    @GET
+    @Path("/getAll")
+    public List<Student> getAll() {
+        return studentService.getAll();
     }
 
 
+    //Read By Id
     @GET
-    @Path("findById/{id}")
+    @Path("getById/{id}")
     public Response findById(@PathParam("id") Long id) {
 
         return studentService.getById(id)
@@ -45,29 +45,10 @@ public class StudentResource {
     }
 
 
-    @GET
-    @Path("/getAll")
-    public List<Student> getAll() {
-        return studentService.getAll();
-    }
-
-
-    @PUT
-    @Path("/update/{id}")
-    public StudentDto update(@PathParam("id") Long id, Student student) {
-        return null;//return studentService.update(id , student.getName());
-    }
-
-    @GET
-    @Path("/getStudent/{id}")
-    public Student getStudent(@PathParam("id") Long id) {
-        return studentService.getStudent(id);
-    }
-
     // CREATE (INSERT)
     @POST
     @Transactional
-    @Path("/addStudent")
+    @Path("/add")
     public Response addStudent(Student student) {
         studentService.addStudent(student);
         return Response
@@ -76,6 +57,15 @@ public class StudentResource {
                 .build();
     }
 
+    //Edit
+    @PUT
+    @Path("/update/{id}")
+    public StudentDto update(@PathParam("id") Long id, Student student) {
+        return null;//return studentService.update(id , student.getName());
+    }
+
+
+    //Remove
     @DELETE
     @Path("/delete/{id}")
     public Student remove(@PathParam("id") Long id) {
@@ -83,6 +73,7 @@ public class StudentResource {
     }
 
 
+    //Search
     @GET
     @Path("/SearchStudent/{name}")
     public StudentDto searchStudent(@PathParam("name") String name) {

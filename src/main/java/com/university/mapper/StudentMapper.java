@@ -11,20 +11,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-
 @Mapper(componentModel = "cdi")
 public interface StudentMapper {
 
 
-//    @Mapping(target = "teacherNames", source =  "teachers")
+    //    @Mapping(target = "teacherNames", source =  "teachers")
     StudentDto toDto(Student student);
 
     default Set<String> map(Set<Teacher> teachers) {
-       // if (teachers == null) return new HashSet<>();
+        // if (teachers == null) return new HashSet<>();
         return null;
         //teachers.stream()
-              //  .map(Teacher::getName) // Teacher classida getName() bo‘lishi kerak
-              //  .collect(Collectors.toSet());
+        //  .map(Teacher::getName) // Teacher classida getName() bo‘lishi kerak
+        //  .collect(Collectors.toSet());
 
     }
 }
