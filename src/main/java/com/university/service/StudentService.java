@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 public class StudentService {
 
 
-    private final StudentRepository studentRepository ;
+    private final StudentRepository studentRepository;
 
     @Inject
-    public StudentService(StudentRepository studentRepository ) {
+    public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
 
     }
@@ -33,7 +33,7 @@ public class StudentService {
     @Inject
     StudentMapper mapper;
 
-    private  Map<Long, Student> studentMap = new HashMap<>();
+    private Map<Long, Student> studentMap = new HashMap<>();
     private Long idCounter = 1L;
 
 
@@ -48,15 +48,9 @@ public class StudentService {
     }
 
     @Logged
-    public Optional<Student> getById(Long id){
+    public Optional<Student> getById(Long id) {
         return studentRepository.getById(id);
     }
-
-    @Transactional
-    public void addStudent(Student student) {
-      studentRepository.addStudent(student);
-    }
-
 
 
     @Logged
@@ -68,7 +62,8 @@ public class StudentService {
 ////        studentMap.put(student.getId(), student);
 ////        return mapper.toDto(student);}
 ////        """
-        }
+    }
+
     @Logged
     public StudentDto update(Long id, String name) {
 //        if (name == null || name.isEmpty()) {
@@ -82,7 +77,9 @@ public class StudentService {
 //        } else {
 //            return null;}
 //    }
-   return null; }
+        return null;
+    }
+
     @Logged
     public StudentDto studentSearch(String name) {
         return null;
@@ -103,5 +100,15 @@ public class StudentService {
     public Student getStudent(Long id) {
         //return studentMap.get(id);
         return null;
+    }
+
+    @Logged
+    public void addStudent(Student student) {
+        studentRepository.addStudent(student);
+    }
+
+    @Logged
+    public void updateStudent(Long id ,Student student) {
+        studentRepository.updateStudent(id , student);
     }
 }

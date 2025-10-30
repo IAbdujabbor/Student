@@ -11,29 +11,41 @@ import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
 import java.util.List;
 import java.util.Optional;
 
+//Attendance Repo
 @ApplicationScoped
 public class AttendanceRepository implements PanacheRepository<Attendance> {
 
+    //Read All
     public List<Attendance> getAll() {
         return listAll();
     }
 
+    //Read By Id
+
+    public Optional<Attendance> getByIdAttendance(Long id) {
+        return findByIdOptional(id);
+    }
+
+
+    //Create
     @Transactional
     public Attendance add(Attendance attendance) {
         persist(attendance);
         return attendance;
     }
 
+    //Edit
     @Transactional
     public Optional<Attendance> updateAttendance(Long id, Attendance attendanceParameter) {
         return findByIdOptional(id).map(attendanceExist -> {
             attendanceExist.setStudent(attendanceParameter.getStudent());
             attendanceExist.setDiscipline(attendanceParameter.getDiscipline());
-            persist(attendanceParameter);
+            persist(attendanceExist);
             return attendanceExist;
         });
     }
 
+    //Delete
     @Transactional
     public Optional<Attendance> deleteAttendanceById(Long id) {
         return findByIdOptional(id).map(attendanceExist -> {

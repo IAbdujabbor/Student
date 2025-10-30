@@ -8,27 +8,39 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+
 @ApplicationScoped
 public class TeacherRepository implements PanacheRepository<Teacher> {
 
+
+    //Read All
+    public List<Teacher> getAll() {
+        return listAll();
+    }
+
+    //Read By id
+    public Optional<Teacher> getByIdTeacher(Long id) {
+        return findByIdOptional(id);
+    }
+
+    //Search
+    public List<Teacher> findByFirstName(String firstName) {
+        return list("firstName", firstName);
+    }
+
+    //Create
     @Transactional
     public void addTeacher(Teacher teacher) {
         persist(teacher);
     }
 
-    public List<Teacher> getAll() {
-        return listAll();
-    }
-
-    public Optional<Teacher> getById(Long id) {
-        return findByIdOptional(id);
-    }
-
+    //Delete
     @Transactional
     public boolean deleteByIdTeacher(Long id) {
         return deleteById(id);
     }
 
+    //Update
     @Transactional
     public Optional<Teacher> updateTeacher(Long id, Teacher teacherParameter) {
         return findByIdOptional(id).map(teacherExisting -> {
@@ -43,7 +55,5 @@ public class TeacherRepository implements PanacheRepository<Teacher> {
     }
 
 
-    public List<Teacher> findByFirstName(String firstName) {
-        return list("firstName", firstName);
-    }
+
 }

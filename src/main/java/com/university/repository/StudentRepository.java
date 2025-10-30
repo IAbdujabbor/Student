@@ -15,27 +15,34 @@ import java.util.Set;
 @ApplicationScoped
 public class StudentRepository implements PanacheRepository<Student> {
 
+    //Read All
     public List<Student> getAll() {
         return listAll();
     }
 
+    //Read By id
+    public Optional<Student> getById(Long id) {
+        return findByIdOptional(id);
+    }
+
+    //Create
     @Transactional
     public void addStudent(Student student) {
         persist(student);
     }
 
-    public Optional<Student> getById(Long id) {
-        return findByIdOptional(id);
-    }
 
+
+    //Delete
     @Transactional
     public Boolean deleteStudent(Long id) {
 
         return deleteById(id);
     }
 
+    //Edit
     @Transactional
-    public Optional<Student> updateByFirstName(Long id, Student studentParameter) {
+    public Optional<Student> updateStudent(Long id, Student studentParameter) {
         return findByIdOptional(id).map(studentExist -> {
             studentExist.setFirstName(studentParameter.getFirstName());
             studentExist.setLastName(studentParameter.getLastName());
@@ -47,6 +54,7 @@ public class StudentRepository implements PanacheRepository<Student> {
         });
     }
 
+    //Search By FirstName
     public List<Student> findByFirstName(String firstName) {
         return list("firstName", firstName);
     }

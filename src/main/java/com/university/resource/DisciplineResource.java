@@ -26,12 +26,22 @@ public class DisciplineResource {
         this.disciplineService = disciplineService;
     }
 
+    //Read All
     @Path("/getAll")
     @GET
     public List<Discipline> getAll() {
         return disciplineService.getAll();
     }
 
+    //Read By Id
+    @Path("/getDiscipline/{id}")
+    @GET
+    public Response getDisciplineById(@PathParam("id") Long id) {
+        disciplineService.deleteByIdDiscipline(id);
+        return Response.ok().build();
+    }
+
+    //Create
     @Transactional
     @Path("/add")
     @POST
@@ -43,6 +53,7 @@ public class DisciplineResource {
 
     }
 
+    //Delete
     @Transactional
     @DELETE
     @Path("/delete/{id}")

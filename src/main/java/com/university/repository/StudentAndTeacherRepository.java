@@ -12,26 +12,36 @@ import java.util.Optional;
 public class StudentAndTeacherRepository implements PanacheRepository<StudentAndTeacher> {
 
 
-
+    //Read All
     public List<StudentAndTeacher> getAll() {
         return find("from StudentAndTeacher").list();
     }
 
+
+    //Read By Id
+    public Optional<StudentAndTeacher> getById(Long id) {
+        return findByIdOptional(id);
+    }
+
+    //Create
     @Transactional
-    public StudentAndTeacher add(StudentAndTeacher studentAndTeacher){
+    public StudentAndTeacher add(StudentAndTeacher studentAndTeacher) {
         persist(studentAndTeacher);
         return studentAndTeacher;
     }
 
+    //Remove
     @Transactional
-    public Optional<StudentAndTeacher>deleteByStudentAndTeacherId(Long id){
-        return findByIdOptional(id).map(studentAndTeacherExist->{
+    public Optional<StudentAndTeacher> deleteByStudentAndTeacherId(Long id) {
+        return findByIdOptional(id).map(studentAndTeacherExist -> {
             delete(studentAndTeacherExist);
             return studentAndTeacherExist;
-        });}
+        });
+    }
 
+    //Edit
     @Transactional
-    public Optional<StudentAndTeacher> updateStudentAndTeacher(Long id , StudentAndTeacher studentAndTeacherParameter ){
+    public Optional<StudentAndTeacher> updateStudentAndTeacher(Long id, StudentAndTeacher studentAndTeacherParameter) {
 
         return findByIdOptional(id).map(studentAndTeacherExist -> {
             studentAndTeacherExist.setStudentId(studentAndTeacherParameter.getStudentId());
@@ -42,6 +52,6 @@ public class StudentAndTeacherRepository implements PanacheRepository<StudentAnd
 
     }
 
-    }
+}
 
 
