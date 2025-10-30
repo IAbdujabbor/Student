@@ -33,7 +33,7 @@ public class TeacherResource {
 
     @POST
     @Transactional
-    @Path("/addTeacher")
+    @Path("/add")
     public Response addTeacher(Teacher teacher) {
         teacherService.addTeacher(teacher);
         return Response

@@ -14,23 +14,22 @@ import java.util.List;
 @Path("/students")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class    StudentResource {
+public class StudentResource {
 
-  private final StudentService studentService;
-
+    private final StudentService studentService;
 
 
     @Inject
-    public StudentResource(StudentService studentService  ) {
-    this.studentService = studentService;}
-
+    public StudentResource(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
 
     @POST
     @Path("/create")
     public StudentDto create(Student student) {
-     //   return studentService.create(student.getName(), student.getAge());
-      return null;
+        //   return studentService.create(student.getName(), student.getAge());
+        return null;
     }
 
 
@@ -38,58 +37,57 @@ public class    StudentResource {
     @Path("findById/{id}")
     public Response findById(@PathParam("id") Long id) {
 
-      return studentService.getById(id)
-              .map(student-> Response.ok(student).build())
-              .orElse(Response.status(Response.Status.NOT_FOUND)
-              .entity("Student with id" + id + " not found" )
-                .build());
-
+        return studentService.getById(id)
+                .map(student -> Response.ok(student).build())
+                .orElse(Response.status(Response.Status.NOT_FOUND)
+                        .entity("Student with id" + id + " not found")
+                        .build());
     }
 
 
     @GET
     @Path("/getAll")
-    public List<Student> getAll(){return studentService.getAll();}
+    public List<Student> getAll() {
+        return studentService.getAll();
+    }
 
-
-//    @GET
-//    @Path("/getAll")
-//    public Object getAll() {
-//        return studentService.getAll();
-//    }
 
     @PUT
     @Path("/update/{id}")
-    public StudentDto update(@PathParam("id") Long id , Student student) {
-      return null;//return studentService.update(id , student.getName());
+    public StudentDto update(@PathParam("id") Long id, Student student) {
+        return null;//return studentService.update(id , student.getName());
     }
 
     @GET
     @Path("/getStudent/{id}")
-    public Student getStudent(@PathParam("id")Long id){return studentService.getStudent(id);}
+    public Student getStudent(@PathParam("id") Long id) {
+        return studentService.getStudent(id);
+    }
 
-  // CREATE (INSERT)
-  @POST
-  @Transactional
-  @Path("/addStudent")
-  public Response addStudent(Student student) {
-    studentService.addStudent(student);
-    return Response
-            .status(Response.Status.CREATED)
-            .entity(student)
-            .build();
-  }
+    // CREATE (INSERT)
+    @POST
+    @Transactional
+    @Path("/addStudent")
+    public Response addStudent(Student student) {
+        studentService.addStudent(student);
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(student)
+                .build();
+    }
 
     @DELETE
     @Path("/delete/{id}")
-    public Student remove(@PathParam("id")Long id) {
+    public Student remove(@PathParam("id") Long id) {
         return studentService.delete(id);
     }
 
+
     @GET
     @Path("/SearchStudent/{name}")
-     public StudentDto searchStudent(@PathParam("name") String name) {return studentService.studentSearch(name);}
-
+    public StudentDto searchStudent(@PathParam("name") String name) {
+        return studentService.studentSearch(name);
+    }
 
 
 }

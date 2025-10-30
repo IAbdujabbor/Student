@@ -1,6 +1,5 @@
 package com.university.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="discipline")
-public class Discipline  {
+public class Discipline {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "discipline_seq")
     @SequenceGenerator(
@@ -24,7 +23,7 @@ public class Discipline  {
             allocationSize = 1
     )
     private Long id;
-    @Column( name = "disipline_name", nullable = false, unique=true)
+    @Column( name = "discipline_name", nullable = false, unique=true)
     private String disciplineName ;
 
     @ManyToOne

@@ -1,9 +1,8 @@
-    package com.university.entity;
+package com.university.entity;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,14 +28,14 @@ public class Teacher  {
     @Column(name="firstname", nullable = false)
     private String firstName;
 
-    @Column(name="lastname", nullable = false)
+    @Column(name="lastname",  nullable = false)
     private String lastName;
 
-    @Column(name="patronymic",  nullable=false)
+    @Column(name="patronymic", nullable=false)
     private String patronymic;
 
-    @Column (name ="age",   nullable = false)
-    public Integer age;
+    @Column (name ="age", nullable = false)
+    private Integer age;
 
     @ManyToMany(mappedBy = "teacher")
     private Set<Student> students = new HashSet<>();

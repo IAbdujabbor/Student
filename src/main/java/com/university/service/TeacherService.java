@@ -36,7 +36,7 @@ public class TeacherService {
 
     @Transactional
     public void deleteTeacher(Long id){
-       boolean deleted =  teacherRepository.deleteTeacher(id);
+       boolean deleted =  teacherRepository.deleteByIdTeacher(id);
        if(!deleted){
            throw new IllegalArgumentException("not found " + id);
        }

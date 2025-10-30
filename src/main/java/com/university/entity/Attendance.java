@@ -1,13 +1,19 @@
 package com.university.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.security.auth.Subject;
-
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "attendance")
 public class Attendance  {
+
 
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE ,generator =  "attendance_seq")

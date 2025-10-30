@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 public class StudentDto {
-    private Long id;
+
     private String name;
     private Long age;
     @Builder.Default

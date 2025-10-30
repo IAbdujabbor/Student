@@ -11,7 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 
 public class TeacherDto {
-    private int id;
+
     private String name;
     private Long age;
     private Set<StudentDto> students;
