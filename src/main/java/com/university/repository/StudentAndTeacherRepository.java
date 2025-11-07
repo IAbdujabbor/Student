@@ -19,7 +19,7 @@ public class StudentAndTeacherRepository implements PanacheRepository<StudentAnd
 
 
     //Read By Id
-    public Optional<StudentAndTeacher> getById(Long id) {
+    public Optional<StudentAndTeacher> getByIdStudentAndTeacher(Long id) {
         return findByIdOptional(id);
     }
 
@@ -45,7 +45,7 @@ public class StudentAndTeacherRepository implements PanacheRepository<StudentAnd
 
         return findByIdOptional(id).map(studentAndTeacherExist -> {
             studentAndTeacherExist.setStudentId(studentAndTeacherParameter.getStudentId());
-            studentAndTeacherExist.setTeacherId(studentAndTeacherExist.getTeacherId());
+            studentAndTeacherExist.setTeacherId(studentAndTeacherParameter.getTeacherId());
             persist(studentAndTeacherExist);
             return studentAndTeacherExist;
         });

@@ -1,15 +1,12 @@
 package com.university.repository;
 
 import com.university.entity.Student;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 
 @ApplicationScoped
@@ -21,7 +18,8 @@ public class StudentRepository implements PanacheRepository<Student> {
     }
 
     //Read By id
-    public Optional<Student> getById(Long id) {
+    public Optional<Student> getByIdStudent(Long id) {
+
         return findByIdOptional(id);
     }
 
@@ -35,9 +33,12 @@ public class StudentRepository implements PanacheRepository<Student> {
 
     //Delete
     @Transactional
-    public Boolean deleteStudent(Long id) {
+    public Optional<Student> deleteStudent(Long id) {
 
-        return deleteById(id);
+        return findByIdOptional(id).map(studentExist -> {
+            delete(studentExist);
+            return studentExist;
+        });
     }
 
     //Edit

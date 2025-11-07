@@ -2,10 +2,7 @@ package com.university.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -15,6 +12,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @Entity
+@Setter
+@Getter
 public class StudentAndTeacher implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_and_teacher")

@@ -1,7 +1,10 @@
 package com.university.resource;
 
-import com.university.dto.StudentDto;
+
+import com.university.dto.request.StudentDtoRequest;
+import com.university.dto.response.StudentDtoResponse;
 import com.university.entity.Student;
+import com.university.response.ResponseData;
 import com.university.service.StudentService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -27,21 +30,30 @@ public class StudentResource {
     // Read All
     @GET
     @Path("/getAll")
-    public List<Student> getAll() {
-        return studentService.getAll();
+    public ResponseData<List<StudentDtoResponse>> getAll() {
+        try {
+            List<StudentDtoResponse> student = studentService.getAll();
+            return new ResponseData<>(student, "Successfully retrieved all students", 200);
+
+        } catch (Exception e) {
+            return new ResponseData<>(e.getMessage(), 500);
+        }
     }
 
 
-    //Read By Id
+    //Read By id
     @GET
     @Path("getById/{id}")
-    public Response findById(@PathParam("id") Long id) {
-
-        return studentService.getById(id)
-                .map(student -> Response.ok(student).build())
-                .orElse(Response.status(Response.Status.NOT_FOUND)
-                        .entity("Student with id" + id + " not found")
-                        .build());
+    public ResponseData<StudentDtoResponse> getStudentById(@PathParam("id") Long id) {
+        try {
+            StudentDtoResponse student = studentService.getByIdStudent(id)
+                    .orElseThrow(() -> new NotFoundException("Student not found with id: " + id));
+            return new ResponseData<>(student, "Student retrieved successfull", 200);
+        } catch (NotFoundException e) {
+            return new ResponseData<>(e.getMessage(), 404);
+        } catch (Exception e) {
+            return new ResponseData<>("Error fetching student" + e.getMessage(), 500);
+        }
     }
 
 
@@ -49,36 +61,54 @@ public class StudentResource {
     @POST
     @Transactional
     @Path("/add")
-    public Response addStudent(Student student) {
-        studentService.addStudent(student);
-        return Response
-                .status(Response.Status.CREATED)
-                .entity(student)
-                .build();
+    public ResponseData<StudentDtoResponse> addStudent(StudentDtoRequest student) {
+       try{StudentDtoResponse  created = studentService.addStudent(student);
+        return new  ResponseData<>(created, "Student successfully added",201);
+       } catch (Exception e) {
+           return new ResponseData<>("Error creating student " + e.getMessage() ,500);
+       }
     }
 
     //Edit
     @PUT
-    @Path("/update/{id}")
-    public StudentDto update(@PathParam("id") Long id, Student student) {
-        return null;//return studentService.update(id , student.getName());
+    @Path("/edit/{id}")
+    @Transactional
+    public ResponseData<StudentDtoResponse> editStudent(@PathParam("id") Long id, StudentDtoRequest student) {
+        try{
+            StudentDtoResponse edited =studentService.updateStudent(id,student );
+            return new ResponseData<>(edited,"Student successfully edited",200);
+        }catch (NotFoundException e){
+            return new ResponseData<>(e.getMessage(),404);
+        }catch (Exception e){
+            return new ResponseData<>("Error editing student " + e.getMessage(),500);
+        }
+
     }
 
 
     //Remove
     @DELETE
     @Path("/delete/{id}")
-    public Student remove(@PathParam("id") Long id) {
-        return studentService.delete(id);
+    @Transactional
+    public ResponseData<Void> deleteStudent(@PathParam("id") Long id) {
+        try {
+        studentService.deleteStudent(id);
+        return new ResponseData<>(null, "Student successfully deleted",200);
+
+        }catch (NotFoundException e){
+            return new ResponseData<>(e.getMessage(),404);
+        }catch (Exception e){
+            return new ResponseData<>("Error deleting student"+ e.getMessage(),500);
+        }
     }
 
 
-    //Search
-    @GET
-    @Path("/SearchStudent/{name}")
-    public StudentDto searchStudent(@PathParam("name") String name) {
-        return studentService.studentSearch(name);
-    }
+//    //Search
+//    @GET
+//    @Path("/SearchStudent/{name}")
+//    public StudentDto searchStudent(@PathParam("name") String name) {
+//        return studentService.studentSearch(name);
+//    }
 
 
 }

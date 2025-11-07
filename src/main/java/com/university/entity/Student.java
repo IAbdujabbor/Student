@@ -3,8 +3,6 @@ package com.university.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.enterprise.inject.Default;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +11,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
+@Getter
+@Setter
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
@@ -38,4 +38,7 @@ public class Student {
             inverseJoinColumns = @JoinColumn(name = "teacher_id")
     )
     private Set<Teacher> teacher = new HashSet<>();
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Attendance> attendance = new HashSet<>();
 }

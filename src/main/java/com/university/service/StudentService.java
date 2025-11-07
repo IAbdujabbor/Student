@@ -1,15 +1,19 @@
 package com.university.service;
 
-import com.university.dto.StudentDto;
+
+import com.university.dto.request.StudentDtoRequest;
+import com.university.dto.response.StudentDtoResponse;
 import com.university.entity.Student;
 import com.university.entity.Teacher;
-import com.university.mapper.StudentMapper;
+//import com.university.mapper.StudentMapper;
 import com.university.aop.Logged;
+import com.university.mapper.StudentMapper;
 import com.university.repository.StudentRepository;
 import com.university.repository.TeacherRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 import lombok.*;
 
 import java.util.*;
@@ -23,65 +27,35 @@ public class StudentService {
 
 
     private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
 
     @Inject
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository,StudentMapper studentMapper) {
         this.studentRepository = studentRepository;
-
-    }
-
-    @Inject
-    StudentMapper mapper;
-
-    private Map<Long, Student> studentMap = new HashMap<>();
-    private Long idCounter = 1L;
-
-
-    @Logged
-    public List<Student> getAll() {
-        return studentRepository.getAll();
-//        return studentMap.values().stream()
-//                .map(mapper::toDto)
-//                .collect(Collectors.toList());
-
-
-    }
-
-    @Logged
-    public Optional<Student> getById(Long id) {
-        return studentRepository.getById(id);
+        this.studentMapper = studentMapper;
     }
 
 
+    //Read All
     @Logged
-    public StudentDto create(String name, Long age) {
-        return null;
-////        """
-////        if (age == null) age = 18L;
-////        Student student = new Student(idCounter++, name, age, new HashSet<>());
-////        studentMap.put(student.getId(), student);
-////        return mapper.toDto(student);}
-////        """
+    public List<StudentDtoResponse> getAll() {
+        return studentRepository.getAll()
+                .stream()
+                .map(studentMapper::toResponseDto)
+                .collect(Collectors.toList());
+
     }
 
+    // Read By id
     @Logged
-    public StudentDto update(Long id, String name) {
-//        if (name == null || name.isEmpty()) {
-//            throw new IllegalArgumentException("Name cannot be null or empty");}
-//
-//        Student student = studentMap.get(id);
-//
-//        if (student != null) {
-//            student.setName(name);
-//            return mapper.toDto(student);
-//        } else {
-//            return null;}
-//    }
-        return null;
+    public Optional<StudentDtoResponse> getByIdStudent(Long id) {
+        return studentRepository.getByIdStudent(id)
+                .map(studentMapper::toResponseDto);
     }
 
+    //Search
     @Logged
-    public StudentDto studentSearch(String name) {
+    public StudentDtoResponse studentSearchFirstName(String name) {
         return null;
 //        return studentMap.values().stream()
 //                .map(mapper::toDto)
@@ -90,25 +64,47 @@ public class StudentService {
 //                .orElse(null);
     }
 
+
+
+
+//Create
     @Logged
-    public Student delete(Long id) {
-        return null;
-        //return studentMap.remove(id);
+    @Transactional
+    public StudentDtoResponse addStudent(StudentDtoRequest student) {
+        Student entity = studentMapper.toEntity(student);
+        studentRepository.persist(entity);
+        return studentMapper.toResponseDto(entity);
     }
 
+    //Edit
     @Logged
-    public Student getStudent(Long id) {
-        //return studentMap.get(id);
-        return null;
+    @Transactional
+    public StudentDtoResponse updateStudent(Long id, StudentDtoRequest studentParameter) {
+    Student student = studentRepository.getByIdStudent(id)
+            .orElseThrow(()-> new NotFoundException("Student not found with id " + id));
+
+    student.setFirstName(studentParameter.getFirstName());
+    student.setLastName(studentParameter.getLastName());
+    student.setPatronymic(studentParameter.getPatronymic());
+    student.setAge(studentParameter.getAge());
+
+    studentRepository.persist(student);
+
+    return studentMapper.toResponseDto(student);
     }
 
+
+    //Delete
     @Logged
-    public void addStudent(Student student) {
-        studentRepository.addStudent(student);
+    @Transactional
+
+    public StudentDtoResponse deleteStudent(Long id) throws NotFoundException {
+        return studentRepository.deleteStudent(id)
+                .map(studentMapper::toResponseDto)
+                .orElseThrow(()-> new NotFoundException("Student not found wit id" + id));
+
     }
 
-    @Logged
-    public void updateStudent(Long id ,Student student) {
-        studentRepository.updateStudent(id , student);
-    }
+
+
 }

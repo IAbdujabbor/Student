@@ -1,5 +1,6 @@
 package com.university.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,9 +12,12 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
+@Getter
+@Setter
+@EqualsAndHashCode
 @Table(name = "discipline")
+
 public class Discipline {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "discipline_seq")
@@ -27,10 +31,13 @@ public class Discipline {
     private String disciplineName;
 
     @ManyToOne
+
     @JoinColumn(name = "teacher_id", nullable = false)
+    @JsonIgnore
     private Teacher teacher;
 
     @OneToMany(mappedBy = "discipline", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<Attendance> attendance = new HashSet<>();
 
 

@@ -17,7 +17,7 @@ public class DisciplineRepository implements PanacheRepository<Discipline> {
         return listAll();
     }
 
-    public Optional<Discipline> getByIdDiscipline(Long id){
+    public Optional<Discipline> getByIdDiscipline(Long id) {
         return findByIdOptional(id);
     }
 
@@ -35,7 +35,6 @@ public class DisciplineRepository implements PanacheRepository<Discipline> {
             return disciplineExist;
         });
     }
-
 
 
     @Transactional

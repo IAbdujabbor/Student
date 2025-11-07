@@ -36,8 +36,11 @@ public class TeacherRepository implements PanacheRepository<Teacher> {
 
     //Delete
     @Transactional
-    public boolean deleteByIdTeacher(Long id) {
-        return deleteById(id);
+    public Optional<Teacher> deleteByIdTeacher(Long id) {
+        return findByIdOptional(id).map(teacherExist->{
+            delete(teacherExist);
+            return teacherExist;
+        });
     }
 
     //Update

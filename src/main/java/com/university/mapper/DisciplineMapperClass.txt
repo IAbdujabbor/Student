@@ -1,0 +1,23 @@
+package com.university.mapper;
+
+import com.university.dto.DisciplineDto;
+import com.university.entity.Discipline;
+import com.university.entity.Teacher;
+
+public class DisciplineMapper {
+
+    public static DisciplineDto toDto(Discipline entity) {
+        return new DisciplineDto(
+                entity.getDisciplineName(),
+
+                entity.getTeacher() !=null ?entity.getTeacher().getFirstName():null,
+                entity.getTeacher() !=null ?entity.getTeacher().getLastName():null
+        );
+    }
+    public static Discipline toEntity(DisciplineDto dto, Teacher teacher) {
+        Discipline discipline = new Discipline();
+        discipline.setDisciplineName(dto.getDisciplineName());
+        discipline.setTeacher(teacher);
+        return discipline;
+    }
+}

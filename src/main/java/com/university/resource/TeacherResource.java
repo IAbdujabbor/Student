@@ -1,8 +1,11 @@
 package com.university.resource;
 
 
+import com.university.dto.request.TeacherDtoRequest;
+import com.university.dto.response.TeacherDtoResponse;
 import com.university.entity.Teacher;
 import com.university.repository.TeacherRepository;
+import com.university.response.ResponseData;
 import com.university.service.TeacherService;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -35,43 +38,72 @@ public class TeacherResource {
     //Read All
     @GET
     @Path("/getAll")
-    public Response getAllTeachers() {
-        teacherService.getAllTeachers();
-        return Response.ok(teacherService.getAllTeachers()).build();
+    public ResponseData<List<TeacherDtoResponse>> getAllTeachers() {
+        try {
+            var teacherList = teacherService.getAllTeachers();
+            return new ResponseData<>(teacherList, "Successfully retrieved all teachers", 200);
+        } catch (Exception e) {
+            return new ResponseData<>("Error retrieving all teachers", 500);
+        }
+
     }
 
+    //Read By id
     @GET
     @Path("/getById/{id}")
-    public Response getTeacherById(@PathParam("id") Long id) {
-        return teacherService.getTeacherById(id)
-                .map(teacherExist -> Response.ok(teacherExist).build())
-                .orElse(Response.status(Response.Status.NOT_FOUND)
-                        .entity("Teacher with ID " + id + " not found")
-                        .build());
+    public ResponseData<TeacherDtoResponse> getTeacherById(@PathParam("id") Long id) {
+        try {
+            var teacherExist = teacherService.getTeacherById(id)
+                    .orElseThrow(() -> new NotFoundException("Teacher not found with id: " + id));
+            return new ResponseData<>(teacherExist, "Successfully retrieved teacher", 200);
+        } catch (NotFoundException e) {
+            return new ResponseData<>(e.getMessage(), 404);
+        } catch (Exception e) {
+            return new ResponseData<>("Error retrieving teacher " + e.getMessage(), 500);
+        }
     }
 
     //Create
     @POST
     @Transactional
     @Path("/add")
-    public Response addTeacher(Teacher teacher) {
-        teacherService.addTeacher(teacher);
-        return Response
-                .status(Response.Status.CREATED)
-                .entity(teacher)
-                .build();
+    public ResponseData<TeacherDtoResponse> addTeacher(TeacherDtoRequest teacher) {
+        try {
+            TeacherDtoResponse created = teacherService.addTeacher(teacher);
+            return new ResponseData<>(created, "Teacher successfully added", 201);
+        } catch (Exception e) {
+            return new ResponseData<>("Error updating teacher:" + e.getMessage(), 500);
+        }
+    }
+
+    //Edit
+    @PUT
+    @Path("edit/{id}")
+    @Transactional
+    public ResponseData<TeacherDtoResponse> editTeacher(@PathParam("id") Long id, TeacherDtoRequest teacherParameter) {
+        try {
+            TeacherDtoResponse edited = teacherService.updateTeacher(id, teacherParameter);
+            return new ResponseData<>(edited, "Teacher successfully updated", 200);
+        } catch (NotFoundException e) {
+            return new ResponseData<>(e.getMessage(), 404);
+        } catch (Exception e) {
+            return new ResponseData<>("Error updating teacher:" + e.getMessage(), 500);
+        }
     }
 
     //Delete
     @DELETE
-    @Path("/deleteById/{id}")
-    public Response deleteTeacherById(@PathParam("id") Long id) {
-        teacherService.deleteTeacher(id);
-        return Response
-                .status(Response.Status.OK)
-                .entity(id)
-                .build();
-        //teacherService.deleteTeacher(id);
+    @Path("/delete/{id}")
+    @Transactional
+    public ResponseData<Void> deleteTeacherById(@PathParam("id") Long id) {
+        try {
+            teacherService.deleteTeacher(id);
+            return new ResponseData<>(null, "Teacher successfully deleted", 200);
+        } catch (NotFoundException e) {
+            return new ResponseData<>(e.getMessage(), 404);
+        } catch (Exception e) {
+            return new ResponseData<>("Error deleting teacher:" + e.getMessage(), 500);
+        }
     }
 
 
