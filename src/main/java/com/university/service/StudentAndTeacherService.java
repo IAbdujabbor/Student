@@ -43,6 +43,7 @@ public class StudentAndTeacherService {
     }
 
     //Read All
+    @Logged
     public List<StudentAndTeacherDtoResponse> getAll() {
         return studentAndTeacherRepository.getAll()
                 .stream()

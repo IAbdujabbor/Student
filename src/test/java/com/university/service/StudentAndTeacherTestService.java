@@ -42,7 +42,6 @@ class StudentAndTeacherServiceTest {
         );
     }
 
-    // ✅ GetAll
     @Test
     void testGetAll() {
         StudentAndTeacher entity = new StudentAndTeacher();
@@ -57,7 +56,7 @@ class StudentAndTeacherServiceTest {
         verify(studentAndTeacherRepository).getAll();
     }
 
-    // ✅ GetById - found
+
     @Test
     void testGetByIdStudentAndTeacher_found() {
         StudentAndTeacher entity = new StudentAndTeacher();
@@ -72,7 +71,7 @@ class StudentAndTeacherServiceTest {
         verify(studentAndTeacherRepository).getByIdStudentAndTeacher(1L);
     }
 
-    // ✅ GetById - not found
+
     @Test
     void testGetByIdStudentAndTeacher_notFound() {
         when(studentAndTeacherRepository.getByIdStudentAndTeacher(1L)).thenReturn(Optional.empty());
@@ -82,7 +81,7 @@ class StudentAndTeacherServiceTest {
         assertTrue(result.isEmpty());
     }
 
-    // ✅ Add
+
     @Test
     void testAddStudentAndTeacher() {
         StudentAndTeacherDtoRequest request = new StudentAndTeacherDtoRequest();
@@ -98,7 +97,7 @@ class StudentAndTeacherServiceTest {
         verify(studentAndTeacherRepository).add(entity);
     }
 
-    // ✅ Update - success
+
     @Test
     void testUpdateStudentAndTeacher_success() {
         StudentAndTeacherDtoRequest request = new StudentAndTeacherDtoRequest();
@@ -115,7 +114,7 @@ class StudentAndTeacherServiceTest {
         verify(studentAndTeacherRepository).updateStudentAndTeacher(1L, entity);
     }
 
-    // ✅ Update - not found
+
     @Test
     void testUpdateStudentAndTeacher_notFound() {
         StudentAndTeacherDtoRequest request = new StudentAndTeacherDtoRequest();
@@ -129,7 +128,7 @@ class StudentAndTeacherServiceTest {
         assertTrue(result.isEmpty());
     }
 
-    // ✅ Delete - success
+
     @Test
     void testDeleteByIdStudentAndTeacher_success() {
         StudentAndTeacher entity = new StudentAndTeacher();
@@ -144,7 +143,7 @@ class StudentAndTeacherServiceTest {
         verify(studentAndTeacherRepository).deleteByStudentAndTeacherId(1L);
     }
 
-    // ✅ Delete - not found (throws exception)
+
     @Test
     void testDeleteByIdStudentAndTeacher_notFound() {
         when(studentAndTeacherRepository.deleteByStudentAndTeacherId(1L)).thenReturn(Optional.empty());
